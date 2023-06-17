@@ -1,0 +1,16 @@
+{
+  "ExtendedData": {
+    "inputs": [
+      "http://localhost:49579/AppService.svc"
+    ],
+    "collectionTypes": [
+      "System.Array",
+      "System.Collections.Generic.Dictionary`2"
+    ],
+    "namespaceMappings": [
+      "*, ServiceExamen"
+    ],
+    "targetFramework": "net6.0",
+    "typeReuseMode": "All"
+  }
+}
