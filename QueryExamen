@@ -1,0 +1,116 @@
+Create Database BdiExamen
+
+
+USE BdiExamen
+CREATE TABLE tblExamen (
+idExamen int identity(1,1) primary key,
+Nombre VARCHAR(255) NOT NULL,
+Descripcion VARCHAR(255) NOT NULL)
+
+--Insertar dato en SQL
+USE BdiExamen;  
+GO  
+CREATE PROCEDURE spAgregar  
+    @Nombre nvarchar(255),
+	@Descripcion nvarchar(255)
+AS   
+	Begin try
+		SET NOCOUNT ON;  
+		INSERT INTO tblExamen (Nombre,Descripcion) VALUES (@Nombre,@Descripcion)
+		IF EXISTS (SELECT 1 FROM tblExamen WHERE Nombre=@Nombre and Descripcion=@Descripcion)
+			BEGIN
+			PRINT 'Registro insertado satisfactoriamente'
+			END
+			ELSE
+			BEGIN
+			PRINT 'Registro no insertado'
+			END
+	end try
+
+	begin catch 
+		PRINT 'Dato no insertado';
+	end catch
+GO  
+
+--Actualizar dato
+USE BdiExamen;  
+GO  
+CREATE PROCEDURE spActualizar  
+	@id int,
+    @Nombre nvarchar(255),
+	@Descripcion nvarchar(255)
+AS   
+	BEGIN TRY  
+		UPDATE tblExamen
+		SET Nombre = @Nombre, Descripcion = @Descripcion
+		WHERE idExamen = @id;
+		
+		IF EXISTS (SELECT 1 FROM tblExamen WHERE idExamen=@id)
+			BEGIN
+			PRINT 'Registro insertado satisfactoriamente'
+			END
+			ELSE
+			BEGIN
+			PRINT 'Registro no Actualizado'
+			END
+	END TRY
+
+	BEGIN CATCH 
+		PRINT 'Registro no Actualizado';
+	END CATCH
+GO  
+
+--Eliminar dato
+
+USE BdiExamen;  
+GO  
+CREATE PROCEDURE spEliminar  
+	@id int
+AS   
+	BEGIN TRY  
+		IF  NOT EXISTS (SELECT 1 FROM tblExamen WHERE idExamen=@id)
+		BEGIN
+			PRINT 'Registro no Existe'
+		END
+		ELSE 
+		BEGIN
+			DELETE FROM tblExamen WHERE idExamen = @id;
+			IF NOT EXISTS (SELECT 1 FROM tblExamen WHERE idExamen=@id)
+			BEGIN
+				PRINT 'Registro insertado satisfactoriamente'
+			END
+			ELSE
+			BEGIN
+				PRINT 'Registro no eliminado'
+			END
+		END
+	END TRY
+
+	BEGIN CATCH 
+		PRINT 'Registro no eliminado';
+	END CATCH
+GO  
+
+--Consultar Dato
+USE BdiExamen;  
+GO  
+CREATE PROCEDURE spConsultar  
+	@Nombre nvarchar(255),
+	@Descripcion nvarchar(255)
+AS   
+	BEGIN TRY  
+		IF  NOT EXISTS (SELECT 1 from tblExamen where Nombre=@Nombre and Descripcion=@Descripcion)
+		BEGIN
+			PRINT 'Registro no Existe'
+		END
+		ELSE 
+		BEGIN
+			select * from tblExamen where Nombre=@Nombre and Descripcion=@Descripcion
+		END
+	END TRY
+
+	BEGIN CATCH 
+		PRINT 'Error';
+	END CATCH
+GO  
+
